@@ -2,7 +2,57 @@ h1{
     font-family: "anurati";
     src: url("assets/Anurati-Regular.otf");
     color: purple;
+    font-size: 48px;
 }
+
 .chooseCharacters {
     background-color: lavender;
+    display: flex;
+    /* flex-wrap: wrap; */
+    border: 1px solid black;
+
+}
+.characterDiv {
+    display: flex;
+   justify-content: space-between;
+}
+.selectDiv {
+    background-color: pink;
+}
+.compare {
+    text-align: center;
+}
+.statsDiv label {
+    display: block;
+    margin: 16px;
+    text-align: center;
+}
+
+
+.comparison {
+    display: flex;
+    justify-content: space-between;
+    
+}
+.comparison > div {
+    width: 200px;
+    border: 1px solid purple;
+}
+.leftDiv {
+    text-align: right;
+}
+.leftDiv progress {
+    direction: rtl;
+}
+progress::after{
+    content: attr(value);
+}
+
+
+img {
+    width: 200px;
+    height: 250px;
+}
+.charactercard {
+    background: rgb(61, 204, 197);
 }
