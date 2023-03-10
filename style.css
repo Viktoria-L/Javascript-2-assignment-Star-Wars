@@ -27,6 +27,9 @@ h1{
     margin: 16px;
     text-align: center;
 }
+/* .statsDiv label[for="gender"]::before {
+    content: "Hej";
+} */
 
 
 .comparison {
@@ -38,6 +41,20 @@ h1{
     width: 200px;
     border: 1px solid purple;
 }
+progress{
+    height: 18px;
+    margin-top: 16px;
+}
+
+/* progress {
+   
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid rgb(74, 174, 74);
+    overflow: hidden;
+    position: relative;
+  } */
+
 .leftDiv {
     text-align: right;
 }
@@ -45,10 +62,14 @@ h1{
     direction: rtl;
 }
 progress::after{
+    margin: 5px;
     content: attr(value);
 }
 
-
+.infoBox {
+    background-color: aqua;
+    border: 1px solid black;
+}
 img {
     width: 200px;
     height: 250px;
