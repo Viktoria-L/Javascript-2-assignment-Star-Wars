@@ -15,26 +15,26 @@ class Character {
   ) {
     this.name = name;
     this.gender = gender;
-    this.height = height;
-    this.mass = mass;
+    this.height = Number(height);
+    this.mass = Number(mass);
     this.hairColor = hairColor;
     this.skinColor = skinColor;
     this.eyeColor = eyeColor;
     this.films = films;
     this.homeworld = homeworld;
-    this.starships = starships,
-    this.vehicles = vehicles,
+    this.starships = starships;
+    this.vehicles = vehicles;
     this.pictureUrl = `./assets/${name}`;
   }
 
   //Det är data som blir datat man kan ta ut saker ifrån
   async getFirstAppearance() {
-    console.log("Första framträdandet");
     let oldestMovie = this.films[0];
 
     for (let i = 0; i < this.films.length; i++) {
       await getMovies(this.films[i]);
-      if (this.films[i].release_date < oldestMovie.release_date) {
+      const releaseDate = new Date(this.films[i].release_date);
+      if (releaseDate < oldestMovie.release_date) {
         oldestMovie = this.films[i];
       }
     }
@@ -59,13 +59,12 @@ class Character {
 
     for (let i = 0; i < sameMoviesArray.length; i++) {
       let movie = await getMovies(sameMoviesArray[i]);
-
       p.innerHTML += `<p>${movie.title}</p>`;
     }
 
     infoBox.append(p);
   }
-//Metod som jämför hemvärldar
+  //Metod som jämför hemvärldar
   static async compareHomeworld(charactersArray, index1, index2) {
     const character1 = charactersArray[index1].homeworld;
     const character2 = charactersArray[index2].homeworld;
@@ -84,15 +83,33 @@ class Character {
     }
   }
 
-  static async mostExpensiveVehicle(charactersArray, index1, index2){
-    
-    
+  //Metod för att skriva ut namnet på karaktärens dyraste fordon
+  //(jämför både starships och vehicles, men bara ett fordon ska skrivas ut).
+  // static async mostExpensiveVehicle(charactersArray, index1, index2) {
+  //   const character1Starships = charactersArray[index1].starships;
+  //   const character2Starships = charactersArray[index2].starships;
+  //   const character1Vehicles = charactersArray[index1].vehicles;
+  //   const character2Vehicles = charactersArray[index2].vehicles;
+  //   let allShipsAndVehicles1 = character1Starships.concat(character1Vehicles);
+  //   let allShipsAndVehicles2 = character2Starships.concat(character2Vehicles);
+  //   console.log("alla för char 1: ", allShipsAndVehicles1);
+  //   console.log("alla för char 2: ", allShipsAndVehicles2);
+
+  //   await findTheExpensiveOne(allShipsAndVehicles1, allShipsAndVehicles2);
+  // }
+
+  async mostExpensiveVehicle() {
+    const characterStarships = this.starships;
+    const characterVehicles = this.vehicles;
+  
+    let allShipsAndVehicles = characterStarships.concat(characterVehicles);
+  
+    console.log("alla för char 1: ", allShipsAndVehicles);
+  
+    await findTheExpensiveOne(allShipsAndVehicles);
   }
 
-
-
 }
-
 
 let characterList = [];
 let numberOne;
@@ -110,8 +127,17 @@ const infoBox = document.querySelector(".infoBox");
 const dropdownOne = document.querySelector("select[name='characterSelectOne']");
 const dropdownTwo = document.querySelector("select[name='characterSelectTwo']");
 
+//Välja karaktärer-knappen
+chooseCharacterBtn.addEventListener("click", () => {
+  characterDiv.innerHTML = "";
+  characterList = [];
+  console.log(characterList);
+  findCharacterNumber();
+  loadCharacter(numberOne, numberTwo);
+});
+
 //Laddar de två valda karaktärerna baserat på deras people-number i API:et
-let loadCharacter = async (numberOne, numberTwo, event) => {
+let loadCharacter = async (numberOne, numberTwo) => {
   try {
     let data1 = await fetch(`https://swapi.dev/api/people/${numberOne}/`);
     let json1 = await data1.json();
@@ -123,7 +149,7 @@ let loadCharacter = async (numberOne, numberTwo, event) => {
 
     if (characterList.length < 2) {
       createCharacterInstance(json1, json2);
-      renderCharacters(json1, json2, event);
+      renderCharacters(json1, json2);
     } else if (characterList.length === 2) {
       console.log("Du har för många karaktärer i ");
     }
@@ -153,6 +179,9 @@ let findCharacterNumber = () => {
     case "Dud Bolt":
       numberOne = 48;
       break;
+    case "Luke Skywalker":
+      numberOne = 1;
+      break;
   }
   console.log("number dropD one: ", numberOne);
 
@@ -174,6 +203,9 @@ let findCharacterNumber = () => {
       break;
     case "Dud Bolt":
       numberTwo = 48;
+      break;
+    case "Luke Skywalker":
+      numberTwo = 1;
       break;
   }
   console.log("number dropD two: ", numberTwo);
@@ -209,7 +241,6 @@ let createCharacterInstance = (objectOne, objectTwo) => {
       vehicles,
       name
     );
-    console.log(newCharacter);
     characterList.push(newCharacter);
 
     console.log(characterList);
@@ -220,7 +251,7 @@ let createCharacterInstance = (objectOne, objectTwo) => {
 
 //Funktion för att rendera de två valda karaktärerna
 
-let renderCharacters = (objectOne, objectTwo, event) => {
+let renderCharacters = (objectOne, objectTwo) => {
   let renderCharacter = (object) => {
     let characterCard = document.createElement("div");
     characterCard.className = "charactercard";
@@ -278,23 +309,37 @@ let renderCharacters = (objectOne, objectTwo, event) => {
 
       let firstABtn = document.createElement("button");
       firstABtn.innerText = "First Appearance";
-      let sameMovieBtn = document.createElement("button");
-      sameMovieBtn.innerText = "Compare Movies";
-      let homeworldBtn = document.createElement("button");
-      homeworldBtn.innerText = "Compare Homeworld";
 
-      characterMethods.append(firstABtn, sameMovieBtn, homeworldBtn);
+      const mostExpensiveBtn = document.createElement("button");
+      mostExpensiveBtn.innerText = "Most Expensive ride";
+   
+
+      characterMethods.append(firstABtn, mostExpensiveBtn);
 
       firstABtn.addEventListener("click", () => {
         character.getFirstAppearance();
       });
-      sameMovieBtn.addEventListener("click", () => {
-        Character.compareMovies(characterList, 0, 1);
+
+      mostExpensiveBtn.addEventListener("click", () => {
+        character.mostExpensiveVehicle();
       });
-      homeworldBtn.addEventListener("click", () => {
-        Character.compareHomeworld(characterList, 0, 1);
-      });
+
+
     });
+
+    const sameMovieBtn = document.createElement("button");
+    sameMovieBtn.innerText = "Compare Movies";
+    sameMovieBtn.addEventListener("click", () => {
+      Character.compareMovies(characterList, 0, 1);
+    });
+
+    const homeworldBtn = document.createElement("button");
+    homeworldBtn.innerText = "Compare Homeworld";
+    homeworldBtn.addEventListener("click", () => {
+      Character.compareHomeworld(characterList, 0, 1);
+    });
+
+    characterMethods.append(sameMovieBtn, homeworldBtn);
 
     let restartBtn = document.createElement("button");
     restartBtn.innerText = "Click to restart!";
@@ -306,15 +351,6 @@ let renderCharacters = (objectOne, objectTwo, event) => {
 };
 
 let compareCharacters = (object) => {};
-
-//Välja karaktärer-knappen
-chooseCharacterBtn.addEventListener("click", (e) => {
-  characterDiv.innerHTML = "";
-  characterList = [];
-  console.log(characterList);
-  findCharacterNumber();
-  loadCharacter(numberOne, numberTwo, e);
-});
 
 //Funktion för att rendera ut statistik-diven i mitten
 let statsDivFunction = () => {
@@ -350,11 +386,92 @@ let getPlanets = async (url) => {
 };
 
 //Funktion för att hämta starships och vehicles
-let getStarshipsVehicles = async (starshipUrl, vehicleUrl) => {
-  let data1 = await fetch(`${starshipUrl}`);
-  let json1 = data1.json();
+let getStarships = async (starshipUrl) => {
+  let data = await fetch(`${starshipUrl}`);
+  let json = data.json();
+  return json;
+};
 
-  let data2 = await fetch(`${vehicleUrl}`);
-  let json2 = data2.json();
-  return json1, json2;  
-}
+let getVehicles = async (vehicleUrl) => {
+  let data = await fetch(`${vehicleUrl}`);
+  let json = data.json();
+  return json;
+};
+
+//Funktion för att hitta den dyraste av fordonen
+// async function findTheExpensiveOne(data1, data2) {
+//   let mostExpensiveStarship = null;
+//   let mostExpensiveStarshipName = null;
+
+//   let findCost = async (arrayUrl) => {
+//     if(arrayUrl.length === 0){
+//       let p = document.createElement("p");
+//       p.innerText = "These characters doesnt own any starships/vehicles! :("
+//       infoBox.append(p);    
+//     } else {
+//     for (let i = 0; i < arrayUrl.length; i++) {
+//       let starship = await getStarships(arrayUrl[i]);
+//       console.log(
+//         "Fordonets kostnad + namn: ",
+//         starship.cost_in_credits,
+//         starship.name
+//       );
+//       if (
+//         starship.cost_in_credits !== "unknown" &&
+//         (!mostExpensiveStarship ||
+//           parseInt(starship.cost_in_credits) > mostExpensiveStarship)
+//       ) {
+//         mostExpensiveStarship = parseInt(starship.cost_in_credits);
+//         mostExpensiveStarshipName = starship.name;
+//       }
+//     }
+//     }
+//   };
+
+//   await findCost(data1);
+//   await findCost(data2);
+
+//   if (mostExpensiveStarship === null) {
+//     console.log("Det finns inga fordon att jämföra");
+//   }
+
+// //Skriv ut det här
+//   console.log(
+//     `${mostExpensiveStarshipName} kostar mest med ett pris på ${mostExpensiveStarship}`
+//   );
+// }
+
+
+async function findTheExpensiveOne(data) {
+  let mostExpensiveStarship = null;
+  let mostExpensiveStarshipName = null;
+
+    if(data.length === 0){
+      let p = document.createElement("p");
+      p.innerText = "These characters doesnt own any starships/vehicles! :("
+      infoBox.append(p);    
+    } else {
+
+      for (let i = 0; i < data.length; i++) {
+        let starship = await getStarships(data[i]);
+        console.log(
+        "Fordonets kostnad + namn: ",
+        starship.cost_in_credits,
+        starship.name
+      );
+      if (
+        starship.cost_in_credits !== "unknown" &&
+        (!mostExpensiveStarship ||
+          parseInt(starship.cost_in_credits) > mostExpensiveStarship)
+      ) {
+        mostExpensiveStarship = parseInt(starship.cost_in_credits);
+        mostExpensiveStarshipName = starship.name;
+      }
+    }
+    }    
+    
+    //Skriv ut det här
+    console.log(
+      `${mostExpensiveStarshipName} kostar mest med ett pris på ${mostExpensiveStarship}`
+      );
+    };
