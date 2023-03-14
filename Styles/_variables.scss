@@ -1,0 +1,21 @@
+// Standardfärger
+$white: #FFFFFB;
+$darkestpurple:#210535;
+$darkpurple: #430d4b;
+$purple:#7b337d;
+$purplepink:#c874b2;
+$light:#f5d5e0;
+
+
+//Fonts
+$anurati: 'Anurati';
+@font-face{
+    font-family: 'Anurati';
+    src:url('./../assets/Anurati-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+$quicksand: 'Quicksand', sans-serif;
+
+//Breakpoints
+$mobile: 768px;

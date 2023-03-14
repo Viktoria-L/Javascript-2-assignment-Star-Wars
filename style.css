@@ -3,38 +3,66 @@ h1{
     src: url("assets/Anurati-Regular.otf");
     color: purple;
     font-size: 48px;
+    text-align: center;
 }
 
 .chooseCharacters {
     background-color: lavender;
     display: flex;
-    /* flex-wrap: wrap; */
+    margin: 5px;
     border: 1px solid black;
 
 }
 .characterDiv {
     display: flex;
-   justify-content: space-between;
+    flex-wrap: wrap;
+   justify-content: space-evenly;
 }
 .selectDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     background-color: pink;
+    margin: 5px;
+}
+.selectDiv> label{
+    margin: 5px;
 }
 .compare {
     text-align: center;
 }
+.statsDiv div{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 10px;
+    
+    color: green;
+   
+}
+.statsDiv div:not(.statsDiv div div){
+    /* border-bottom: 1px solid rgb(227, 209, 209); */
+}
+/*pilarnas storlek*/
+.statsDiv div div{
+    font-size: 24px;
+}
 .statsDiv label {
     display: block;
-    margin: 16px;
+    margin-top: 16px;
     text-align: center;
+    color: black;
 }
-/* .statsDiv label[for="gender"]::before {
-    content: "Hej";
-} */
+button {
+    margin: 5px;
+}
 
 
 .comparison {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     
 }
 .comparison > div {
@@ -42,18 +70,31 @@ h1{
     border: 1px solid purple;
 }
 progress{
+    position: relative;
+    appearance: none;
     height: 18px;
     margin-top: 16px;
+    
 }
 
-/* progress {
-   
-    height: 30px;
-    border-radius: 5px;
-    border: 1px solid rgb(74, 174, 74);
-    overflow: hidden;
-    position: relative;
-  } */
+progress::-webkit-progress-bar {
+    background-color: #dacccc;
+    /* border-radius: 10px; */
+  }
+  
+  progress::-webkit-progress-value {
+    background-color: #4CAF50;
+    /* border-radius: 10px; */
+  }
+progress::after{
+    content: attr(value);
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+
 
 .leftDiv {
     text-align: right;
@@ -61,19 +102,20 @@ progress{
 .leftDiv progress {
     direction: rtl;
 }
-progress::after{
-    margin: 5px;
-    content: attr(value);
-}
+
 
 .infoBox {
     background-color: aqua;
-    border: 1px solid black;
+    
 }
 img {
     width: 200px;
     height: 250px;
+    border-radius: 6px;
 }
 .charactercard {
-    background: rgb(61, 204, 197);
+    background: rgb(200, 54, 205);
+}
+.characterMethods {
+    text-align: center;
 }

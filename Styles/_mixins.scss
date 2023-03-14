@@ -1,0 +1,40 @@
+@mixin border($color: $dark-green){
+    border: 10px dotted $color;
+    padding: 6px;
+   
+}
+// funktion för skärmstorlek på 768px och uppåt, dvs tablet, desktop
+@mixin tablet{
+    @media (min-width: $mobile) {
+      @content;
+    }
+}
+//funktion för skärmstorlekar på 768px och mindre, dvs mobil
+@mixin mobile {
+    @media (max-width: $mobile){
+        @content;
+    }
+}
+
+@mixin desktop {
+  @media (min-width: 1024px){
+    @content
+  }
+}
+
+@mixin font($font: $quicksand){
+    font-family: $font;
+}
+
+@mixin flex(
+  $direction: row,
+  $justify: flex-start,
+  $align: flex-start,
+  $wrap: nowrap
+) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+}
