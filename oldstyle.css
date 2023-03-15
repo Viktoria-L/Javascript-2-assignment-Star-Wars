@@ -52,14 +52,15 @@ h2{
 .selectDiv> label{
     margin: 5px;
 }
-.selectDiv button {
+.selectDiv button,
+.compareBtn {
     font-family: 'Quicksand';
     font-weight: 700;
     background-color: #c874b2;
     border-radius: 10px;
     color:#210535;
-    padding: 6px;
-    font-size: 14px;
+    padding: 2px 10px;
+    font-size: 12px;
     box-shadow: 0 0 4px 1px #7b337d;
     border:none;
     
@@ -67,6 +68,7 @@ h2{
 
 button:hover{
     background-color: #7b337d;
+    color: white;
 }
 
 
@@ -86,13 +88,12 @@ button:hover{
     padding: 0 10px;
     color: #210535;
 }
-.statsDiv div:not(.statsDiv div div){
-    /* border-bottom: 1px solid rgb(227, 209, 209); */
-}
+
 
 /*pilarnas storlek*/
 .statsDiv div div{
-    font-size: 24px;
+    font-size: 26px;
+   
 }
 .statsDiv label {
     display: block;
@@ -132,7 +133,7 @@ progress::-webkit-progress-bar {
   
 progress::-webkit-progress-value {
     background-color: #7b337d;
-    /* border-radius: 10px; */
+    border-radius: 10px;
   }
 progress::after{
     content: attr(value);
@@ -191,9 +192,9 @@ button {
     background-color: #c874b2;
     border-radius: 10px;
     color:#210535;
-    padding: 6px;
+    /* padding: 6px; */
     margin: 5px 0;
-    font-size: 14px;
-    box-shadow: 0 0 4px 1px #400e42;
+    font-size: 12px;
+    /* box-shadow: 0 0 4px 1px #400e42; */
     border:none;
 }

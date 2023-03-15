@@ -1,0 +1,25 @@
+body {
+    @include font($quicksand);
+    background: url('./assets/nebula.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+header {
+    text-align: center;
+    height: 117px;
+
+    h1{
+        @include font( $anurati);
+        color: $light;
+        font-size: 56px;
+        margin: 25px;
+        display: inline-block;
+        letter-spacing: 2px;
+    }
+}
+
+h2{
+   margin: 0;
+   padding-top: 5px;
+}
+

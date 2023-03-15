@@ -1,0 +1,140 @@
+main {
+    @include flex;
+    .main-content {
+        @include desktop{
+            width: 540px;
+        }
+        @include mobile{
+            flex-wrap: wrap;
+        }
+    }
+}
+
+.chooseCharacters {
+    background-color: $light;
+    @include flex;
+    @include border;
+}
+
+.selectDiv {
+    @include flex;
+    width: 98%;
+    background-image: linear-gradient(180deg, $purplepink, $light);
+    margin: 5px;
+    font-weight: bold;
+    label {
+        margin: 5px;
+    }
+    button {
+        @include largeBtn;
+    }
+}
+.compareBtn {
+    @include largeBtn;
+}
+
+.characterDiv{
+    @include flex($direction: row, $justify: space-between);
+    margin-bottom: 16px;
+}
+
+.charactercard{
+    color: $white;
+    font-weight: bold;
+    text-align: center;
+    img {
+    width: 250px;
+    height: 250px;
+    border-radius: 4px;
+    }
+}
+
+.compare {
+    text-align: center;
+}
+
+.statsDiv {
+    label {
+        display: block;
+        margin-top: 16px;
+        text-align: center;
+        color: $darkestpurple;
+    }
+    div {
+    @include flex($direction: row, $justify: space-between, $align: flex-end, $wrap: nowrap);
+    padding: 0 10px;
+    color: $darkestpurple;
+        div {
+            font-size: 24px;
+        }
+    }
+}
+
+.compareDiv {
+    background-image: linear-gradient(180deg, $purplepink, $light);
+    @include border;
+}
+
+.comparison {
+    @include flex($direction:row, $align:flex-start, $wrap:nowrap);
+}
+
+progress {
+    position: relative;
+    appearance: none;
+    height: 19px;
+    margin-top: 16px;
+    &::-webkit-progress-bar {
+        background-color: $white;
+        @include border;
+      }
+    &::-webkit-progress-value {
+        background-color: $purple;
+        @include border;
+      }
+    &::after{
+        content: attr(value);
+        font-weight: bold;
+        font-size: 12px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+.leftDiv {
+    text-align: right;
+    progress{
+        direction: rtl;
+    }
+}
+
+.infoBox {
+    background-color: $darkpurple;
+    color: $light;
+    text-align: center;
+    @include border;
+    min-height: 100px;
+    margin-top: 16px;
+    padding-bottom: 10px;
+    font-weight: normal;
+
+    p{
+        margin: 0;
+    }
+    .loading-modal {
+        color: $light;       
+    }
+}
+
+.characterMethods {
+    text-align: center;
+    button {
+        margin: 5px;
+    }
+}
+
+button {
+    @include smallBtn;
+}

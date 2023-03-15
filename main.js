@@ -11,7 +11,6 @@ class Character {
     homeworld,
     starships,
     vehicles,
-    pictureUrl
   ) {
     this.name = name;
     this.gender = gender;
@@ -29,6 +28,7 @@ class Character {
 
   //Det är data som blir datat man kan ta ut saker ifrån
   async getFirstAppearance() {
+    loadingModal("Loading first appearance...");
     let oldestMovie = this.films[0];
 
     for (let i = 0; i < this.films.length; i++) {
@@ -39,6 +39,7 @@ class Character {
       }
     }
     let data = await getData(oldestMovie);
+    infoBox.removeChild(document.querySelector(".loading-modal"));
     let p = document.createElement("p");
     p.innerHTML = `${this.name} first appearance was ${data.release_date} `;
     infoBox.append(p);
@@ -46,6 +47,7 @@ class Character {
 
   //Metod som jämför om karaktärerna varit med i samma filmer, movie.title är det som ska skrivas ut
   static async compareMovies(charactersArray, index1, index2) {
+    loadingModal("Loading movies...");
     const character1 = charactersArray[index1].films;
     const character2 = charactersArray[index2].films;
 
@@ -65,7 +67,7 @@ class Character {
         p.innerHTML += `<p>${movie.title}</p>`;
       }
     }
-
+    infoBox.removeChild(document.querySelector(".loading-modal"));
     infoBox.append(p);
   }
   //Metod som jämför hemvärldar
@@ -73,34 +75,35 @@ class Character {
     const character1 = charactersArray[index1].homeworld;
     const character2 = charactersArray[index2].homeworld;
     console.log(character1, character2);
+
+    loadingModal("Loading homeworld data...");
     let character1Home = await getData(character1);
     let character2Home = await getData(character2);
+    infoBox.removeChild(document.querySelector(".loading-modal"));
 
+    let p = document.createElement("p");
     if (character1Home.name === character2Home.name) {
-      let p = document.createElement("p");
       p.innerHTML = `${charactersArray[index1].name} and ${charactersArray[index2].name} comes from the same homeworld ${character1Home.name}!`;
-      infoBox.append(p);
     } else {
-      let p = document.createElement("p");
-      p.innerHTML = `${charactersArray[index1].name} and ${charactersArray[index2].name} do not come from the same homeworld. ${charactersArray[index1].name} comes from ${character1Home.name} and ${charactersArray[index2].name} comes from ${character2Home.name}!`;
-      infoBox.append(p);
+      p.innerHTML = `${charactersArray[index1].name} and ${charactersArray[index2].name} do not come from the same homeworld.\n ${charactersArray[index1].name} comes from ${character1Home.name} and ${charactersArray[index2].name} comes from ${character2Home.name}!`;
     }
+    infoBox.append(p);
   }
 
   async mostExpensiveVehicle() {
     const characterStarships = this.starships;
     const characterVehicles = this.vehicles;
-
+    loadingModal("Loading the most expensive vechicle...");
     let allShipsAndVehicles = characterStarships.concat(characterVehicles);
 
-    console.log("alla för char 1: ", allShipsAndVehicles);
-
     if (allShipsAndVehicles.length === 0) {
+      infoBox.removeChild(document.querySelector(".loading-modal"));
       let p = document.createElement("p");
       p.innerText = `${this.name} doesnt own any starships/vehicles! :(`;
       infoBox.append(p);
     } else {
       await findTheExpensiveOne(allShipsAndVehicles);
+      infoBox.removeChild(document.querySelector(".loading-modal"));
     }
   }
 }
@@ -117,25 +120,27 @@ const restartDiv = document.querySelector(".restart");
 const characterMethods = document.querySelector(".characterMethods");
 const infoBox = document.querySelector(".infoBox");
 const selectDiv = document.querySelector(".selectDiv");
-
-//Dessa två är dropdownsen och XX.value ger det valda värdet
 const dropdownOne = document.querySelector("select[name='characterSelectOne']");
 const dropdownTwo = document.querySelector("select[name='characterSelectTwo']");
 
 //Välja karaktärer-knappen
 chooseCharacterBtn.addEventListener("click", () => {
+  loadingModal("Loading characters...");
   characterDiv.innerHTML = "";
   characterList = [];
-  loadingModal("Loading characters... Please wait", 2500);
   findCharacterNumber();
   loadCharacter(numberOne, numberTwo);
+  infoBox.removeChild(document.querySelector(".loading-modal"));
+  infoBox.innerText = "These are your chosen characters. Press the button to compare them.";
   chooseCharacterBtn.remove();
   let restartBtn = document.createElement("button");
-  restartBtn.innerText = "Click here to choose another character!";
+  restartBtn.innerText = "Click here to choose again!";
   restartBtn.addEventListener("click", () => {
     location.reload();
   });
   selectDiv.append(restartBtn);
+  dropdownOne.disabled = true;
+  dropdownTwo.disabled = true;
 });
 
 //Laddar de två valda karaktärerna baserat på deras people-number i API:et
@@ -149,12 +154,9 @@ let loadCharacter = async (numberOne, numberTwo) => {
     let json2 = await data2.json();
     console.log(json2);
 
-    if (characterList.length < 2) {
       createCharacterInstance(json1, json2);
       renderCharacters(json1, json2);
-    } else if (characterList.length === 2) {
-      console.log("Du har för många karaktärer i ");
-    }
+  
     return json1, json2;
   } catch (error) {
     infoBox.innerHTML =
@@ -256,15 +258,13 @@ let createCharacterInstance = (objectOne, objectTwo) => {
 };
 
 //Funktion för att rendera ut de två valda karaktärerna
-
 let renderCharacters = (objectOne, objectTwo) => {
   let renderCharacter = (object) => {
     let characterCard = document.createElement("div");
     characterCard.className = "charactercard";
-    characterCard.innerHTML = `<p>Name: ${object.name}</p>
+    characterCard.innerHTML = `<p>${object.name}</p>
               <img src="./assets/${object.name}.jpg" alt="Img of ${object.name}"></img>
               `;
-
     characterDiv.append(characterCard);
   };
   renderCharacter(objectOne);
@@ -277,6 +277,8 @@ let renderCharacters = (objectOne, objectTwo) => {
 
   compareBtn.addEventListener("click", () => {
     compareBtn.style = `display: none`;
+    infoBox.innerText =
+      "Here you can see a comparison of which character is the longest, heaviest and who has been in the most films. If the values ​​match for any property, it is highlighted with the arrows.";
     statsDivFunction();
 
     characterList.forEach((character, index) => {
@@ -327,17 +329,10 @@ let renderCharacters = (objectOne, objectTwo) => {
       div.append(firstABtn, mostExpensiveBtn);
 
       firstABtn.addEventListener("click", () => {
-        loadingModal("Loading first appearance... Please wait", 2500);
-
         character.getFirstAppearance();
       });
 
       mostExpensiveBtn.addEventListener("click", () => {
-        loadingModal(
-          "Loading the most expensive vechicle... Please wait",
-          2500
-        );
-
         character.mostExpensiveVehicle();
       });
     });
@@ -347,15 +342,12 @@ let renderCharacters = (objectOne, objectTwo) => {
     const sameMovieBtn = document.createElement("button");
     sameMovieBtn.innerText = "Compare Movies";
     sameMovieBtn.addEventListener("click", () => {
-      loadingModal("Loading comparison... Please wait", 2500);
       Character.compareMovies(characterList, 0, 1);
     });
 
     const homeworldBtn = document.createElement("button");
     homeworldBtn.innerText = "Compare Homeworld";
     homeworldBtn.addEventListener("click", () => {
-      infoBox.innerHTML = "";
-      loadingModal("Loading comparison... Please wait", 2500);
       Character.compareHomeworld(characterList, 0, 1);
     });
 
@@ -488,20 +480,21 @@ async function findTheExpensiveOne(data) {
       mostExpensiveStarshipName = starship.name;
     }
   }
-  let p = document.createElement("p");
-  p.innerText = `${mostExpensiveStarshipName} is the most expensive vehicle/starship and costs : ${mostExpensiveStarship}`;
-  infoBox.append(p);
+  if (mostExpensiveStarship !== null) {
+    let p = document.createElement("p");
+    p.innerText = `${mostExpensiveStarshipName} is this characters most expensive vehicle/starship and costs : ${mostExpensiveStarship}`;
+    infoBox.append(p);
+  } else {
+    let p = document.createElement("p");
+    p.innerText = `This characters starship/vehicle that was compared has an unknown value.`;
+    infoBox.append(p);
+  }
 }
 
-function loadingModal(text, time) {
+function loadingModal(text) {
   let modal = document.createElement("div");
-
   modal.innerText = text;
   modal.className = "loading-modal";
-  modal.style = `color: #f5d5e0; font-weight: bold;`;
   infoBox.innerHTML = "";
   infoBox.prepend(modal);
-  setTimeout(() => {
-    infoBox.removeChild(modal);
-  }, time);
 }
