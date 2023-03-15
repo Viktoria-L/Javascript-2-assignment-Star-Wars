@@ -10,7 +10,7 @@ class Character {
     films,
     homeworld,
     starships,
-    vehicles,
+    vehicles
   ) {
     this.name = name;
     this.gender = gender;
@@ -26,7 +26,7 @@ class Character {
     this.pictureUrl = `./assets/${name}`;
   }
 
-  //Det är data som blir datat man kan ta ut saker ifrån
+  //Metod som letar filmen med tidigaste release-datum
   async getFirstAppearance() {
     loadingModal("Loading first appearance...");
     let oldestMovie = this.films[0];
@@ -74,7 +74,6 @@ class Character {
   static async compareHomeworld(charactersArray, index1, index2) {
     const character1 = charactersArray[index1].homeworld;
     const character2 = charactersArray[index2].homeworld;
-    console.log(character1, character2);
 
     loadingModal("Loading homeworld data...");
     let character1Home = await getData(character1);
@@ -99,7 +98,7 @@ class Character {
     if (allShipsAndVehicles.length === 0) {
       infoBox.removeChild(document.querySelector(".loading-modal"));
       let p = document.createElement("p");
-      p.innerText = `${this.name} doesnt own any starships/vehicles! :(`;
+      p.innerText = `${this.name} doesn't own any starships/vehicles! :(`;
       infoBox.append(p);
     } else {
       await findTheExpensiveOne(allShipsAndVehicles);
@@ -107,6 +106,9 @@ class Character {
     }
   }
 }
+
+//TA BORT??
+let infoToInfobox = (condition, text) => {};
 
 let characterList = [];
 let numberOne;
@@ -116,7 +118,7 @@ const chooseCharacterBtn = document.querySelector(".chooseBtn");
 const compareDiv = document.querySelector(".compare");
 const characterDiv = document.querySelector(".characterDiv");
 const comparisonDiv = document.querySelector(".comparison");
-const restartDiv = document.querySelector(".restart");
+
 const characterMethods = document.querySelector(".characterMethods");
 const infoBox = document.querySelector(".infoBox");
 const selectDiv = document.querySelector(".selectDiv");
@@ -130,8 +132,6 @@ chooseCharacterBtn.addEventListener("click", () => {
   characterList = [];
   findCharacterNumber();
   loadCharacter(numberOne, numberTwo);
-  infoBox.removeChild(document.querySelector(".loading-modal"));
-  infoBox.innerText = "These are your chosen characters. Press the button to compare them.";
   chooseCharacterBtn.remove();
   let restartBtn = document.createElement("button");
   restartBtn.innerText = "Click here to choose again!";
@@ -148,15 +148,12 @@ let loadCharacter = async (numberOne, numberTwo) => {
   try {
     let data1 = await fetch(`https://swapi.dev/api/people/${numberOne}/`);
     let json1 = await data1.json();
-    console.log(json1);
-
     let data2 = await fetch(`https://swapi.dev/api/people/${numberTwo}/`);
     let json2 = await data2.json();
-    console.log(json2);
 
-      createCharacterInstance(json1, json2);
-      renderCharacters(json1, json2);
-  
+    createCharacterInstance(json1, json2);
+    renderCharacters(json1, json2);
+
     return json1, json2;
   } catch (error) {
     infoBox.innerHTML =
@@ -167,6 +164,7 @@ let loadCharacter = async (numberOne, numberTwo) => {
   }
 };
 
+//Funktion som kollar value i dropdown och sätter en variabel till karaktärens url-nummer.
 let findCharacterNumber = () => {
   switch (dropdownOne.value) {
     case "R2D2":
@@ -191,7 +189,6 @@ let findCharacterNumber = () => {
       numberOne = 1;
       break;
   }
-  console.log("number dropD one: ", numberOne);
 
   switch (dropdownTwo.value) {
     case "R2D2":
@@ -216,11 +213,19 @@ let findCharacterNumber = () => {
       numberTwo = 1;
       break;
   }
-  console.log("number dropD two: ", numberTwo);
 };
 
+//Funktion som skapar instanser av Character. Den tar emot två objekt och därför är det en funktion inuti som hanterar vardera objekt.
 let createCharacterInstance = (objectOne, objectTwo) => {
   let createInstanceForObject = (object) => {
+    let newObject = {};
+    for (let [key, value] of Object.entries(object)) {
+      if (typeof value === "string") {
+        value = value.charAt(0).toUpperCase() + value.slice(1);
+      }
+      newObject[key] = value;
+    }
+
     let {
       name,
       gender,
@@ -233,7 +238,7 @@ let createCharacterInstance = (objectOne, objectTwo) => {
       homeworld,
       starships,
       vehicles,
-    } = object;
+    } = newObject;
 
     let newCharacter = new Character(
       name,
@@ -250,14 +255,13 @@ let createCharacterInstance = (objectOne, objectTwo) => {
       name
     );
     characterList.push(newCharacter);
-
-    console.log(characterList);
   };
   createInstanceForObject(objectOne);
   createInstanceForObject(objectTwo);
+  console.log("Array med karaktärer: ", characterList);
 };
 
-//Funktion för att rendera ut de två valda karaktärerna
+//Funktion för att rendera ut de två valda karaktärerna.
 let renderCharacters = (objectOne, objectTwo) => {
   let renderCharacter = (object) => {
     let characterCard = document.createElement("div");
@@ -269,6 +273,8 @@ let renderCharacters = (objectOne, objectTwo) => {
   };
   renderCharacter(objectOne);
   renderCharacter(objectTwo);
+  infoBox.innerText =
+    "These are your chosen characters. Press the button to compare them.";
 
   let compareBtn = document.createElement("button");
   compareBtn.className = "compareBtn";
@@ -293,13 +299,13 @@ let renderCharacters = (objectOne, objectTwo) => {
         films,
       } = character;
 
-      if (gender === "n/a") {
+      if (gender === "N/a") {
         gender = "No data";
       }
-      if (hairColor === "n/a") {
+      if (hairColor === "N/a") {
         hairColor = "No data";
       }
-      if (skinColor === "n/a") {
+      if (skinColor === "N/a") {
         skinColor = "No data";
       }
 
@@ -392,13 +398,21 @@ let compareCharacters = (charactersArr, index1, index2) => {
     haircolorLeft.style = "visibility: visible";
     haircolorLeft.nextElementSibling.style = `color: ${character1.hairColor}; font-weight: bolder`;
   }
-  if (character1.height > character2.height) {
+  if (character1.height === character2.height) {
+    heightRight.style = "visibility: visible";
+    heightLeft.style = "visibility: visible";
+    heightLeft.nextElementSibling.style = `font-weight: bolder`;
+  } else if (character1.height > character2.height) {
     heightLeft.style = "visibility: visible";
   } else if (character2.height > character1.height) {
     heightRight.style = "visibility: visible";
   }
 
-  if (character1.mass > character2.mass) {
+  if (character1.mass === character2.mass) {
+    massRight.style = "visibility: visible";
+    massLeft.style = "visibility: visible";
+    massLeft.nextElementSibling.style = `font-weight: bolder`;
+  } else if (character1.mass > character2.mass) {
     massLeft.style = "visibility: visible";
   } else if (character2.mass > character1.mass) {
     massRight.style = "visibility: visible";
@@ -424,11 +438,29 @@ let compareCharacters = (charactersArr, index1, index2) => {
   } else if (character2.films.length > character1.films.length) {
     filmsRight.style = "visibility: visible";
   }
+
+  //TA BORT NEDAN
+  // showComparison(genderLeft, genderRight, character1.gender === character2.gender,"string");
+  // showComparison(haircolorLeft, haircolorRight, character1.hairColor === character2.hairColor, "string");
+  // showComparison(heightLeft, heightRight, character1.height === character2.height, character1.height > character2.height);
+  // showComparison(massLeft, massRight, character1.mass === character2.mass, character1.mass > character2.mass);
+  // showComparison(skincolorLeft, skincolorRight, character1.skinColor === character2.skinColor, "string");
+  // showComparison(eyecolorLeft, eyecolorRight, character1.eyeColor === character2.eyeColor, "string");
+  // showComparison(filmsLeft, filmsRight, character1.films.length === character2.films.length, character1.films.length > character2.films.length);
 };
 
-function toogleVisibility(element) {
-  element.style = "visibility: visible";
-}
+//TA BORT NEDAN
+// function showComparison(leftElem, rightElem, isEqual, leftIsBigger) {
+//   if (isEqual) {
+//     leftElem.style = "visibility: visible";
+//     rightElem.style = "visibility: visible";
+//     leftElem.nextElementSibling.style.fontWeight = "bolder";
+//   } else if (leftIsBigger && leftIsBigger !== "string"){
+//     leftElem.style = "visibility: visible";
+//     } else if(!leftIsBigger && leftIsBigger !== "string"){
+//       rightElem.style = "visibility: visible";
+//   }
+// }
 
 //Funktion för att rendera ut statistik-diven i mitten
 let statsDivFunction = () => {
@@ -444,7 +476,7 @@ let statsDivFunction = () => {
   comparisonDiv.append(statsDiv);
 };
 
-//Funktion för att hämta data från API:et
+//Funktion för att hämta data från API:et, den tar alltid emot en url
 let getData = async (url) => {
   try {
     let data = await fetch(`${url}`);
@@ -459,7 +491,7 @@ let getData = async (url) => {
   }
 };
 
-//Funktion för att hitta den dyraste av fordonet
+//Funktion för att hitta den dyraste av fordonen
 async function findTheExpensiveOne(data) {
   let mostExpensiveStarship = null;
   let mostExpensiveStarshipName = null;
@@ -486,7 +518,7 @@ async function findTheExpensiveOne(data) {
     infoBox.append(p);
   } else {
     let p = document.createElement("p");
-    p.innerText = `This characters starship/vehicle that was compared has an unknown value.`;
+    p.innerText = `The character starship/vehicle has an unknown value.`;
     infoBox.append(p);
   }
 }
@@ -496,5 +528,5 @@ function loadingModal(text) {
   modal.innerText = text;
   modal.className = "loading-modal";
   infoBox.innerHTML = "";
-  infoBox.prepend(modal);
+  infoBox.append(modal);
 }
