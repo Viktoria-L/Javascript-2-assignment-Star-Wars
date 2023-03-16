@@ -84,7 +84,7 @@ class Character {
     if (character1Home.name === character2Home.name) {
       p.innerHTML = `${charactersArray[index1].name} and ${charactersArray[index2].name} comes from the same homeworld ${character1Home.name}!`;
     } else {
-      p.innerHTML = `${charactersArray[index1].name} and ${charactersArray[index2].name} do not come from the same homeworld.\n ${charactersArray[index1].name} comes from ${character1Home.name} and ${charactersArray[index2].name} comes from ${character2Home.name}!`;
+      p.innerHTML = `${charactersArray[index1].name} and ${charactersArray[index2].name} do not come from the same homeworld.<br>${charactersArray[index1].name} comes from ${character1Home.name} and ${charactersArray[index2].name} comes from ${character2Home.name}!`;
     }
     infoBox.append(p);
   }
@@ -106,9 +106,6 @@ class Character {
     }
   }
 }
-
-//TA BORT??
-let infoToInfobox = (condition, text) => {};
 
 let characterList = [];
 let numberOne;
@@ -366,102 +363,51 @@ let compareCharacters = (charactersArr, index1, index2) => {
   const character1 = charactersArr[index1];
   const character2 = charactersArr[index2];
 
+//Alla mina divs med pilar i
   let genderRight = document.getElementById("Gender_right");
   let genderLeft = document.getElementById("Gender_left");
-
   let haircolorLeft = document.getElementById("Haircolor_left");
   let haircolorRight = document.getElementById("Haircolor_right");
-
   let heightLeft = document.getElementById("Height_left");
   let heightRight = document.getElementById("Height_right");
-
   let massLeft = document.getElementById("Mass_left");
   let massRight = document.getElementById("Mass_right");
-
   let skincolorLeft = document.getElementById("Skincolor_left");
   let skincolorRight = document.getElementById("Skincolor_right");
-
   let eyecolorLeft = document.getElementById("Eyecolor_left");
   let eyecolorRight = document.getElementById("Eyecolor_right");
-
   let filmsLeft = document.getElementById("Films_left");
   let filmsRight = document.getElementById("Films_right");
 
-  if (character1.gender === character2.gender) {
-    genderRight.style = "visibility: visible";
-    genderLeft.style = "visibility: visible";
-    genderLeft.nextElementSibling.style.fontWeight = "bolder";
-  }
-
-  if (character1.hairColor === character2.hairColor) {
-    haircolorRight.style = "visibility: visible";
-    haircolorLeft.style = "visibility: visible";
-    haircolorLeft.nextElementSibling.style = `color: ${character1.hairColor}; font-weight: bolder`;
-  }
-  if (character1.height === character2.height) {
-    heightRight.style = "visibility: visible";
-    heightLeft.style = "visibility: visible";
-    heightLeft.nextElementSibling.style = `font-weight: bolder`;
-  } else if (character1.height > character2.height) {
-    heightLeft.style = "visibility: visible";
-  } else if (character2.height > character1.height) {
-    heightRight.style = "visibility: visible";
-  }
-
-  if (character1.mass === character2.mass) {
-    massRight.style = "visibility: visible";
-    massLeft.style = "visibility: visible";
-    massLeft.nextElementSibling.style = `font-weight: bolder`;
-  } else if (character1.mass > character2.mass) {
-    massLeft.style = "visibility: visible";
-  } else if (character2.mass > character1.mass) {
-    massRight.style = "visibility: visible";
-  }
-
-  if (character1.skinColor === character2.skinColor) {
-    skincolorRight.style = "visibility: visible";
-    skincolorLeft.style = "visibility: visible";
-    skincolorLeft.nextElementSibling.style = `color: ${character1.skinColor}; font-weight: bolder`;
-  }
-  if (character1.eyeColor === character2.eyeColor) {
-    eyecolorRight.style = "visibility: visible";
-    eyecolorLeft.style = "visibility: visible";
-    eyecolorLeft.nextElementSibling.style = `color: ${character1.eyeColor}; font-weight: bolder`;
-  }
-
-  if (character1.films.length === character2.films.length) {
-    filmsRight.style = "visibility: visible";
-    filmsLeft.style = "visibility: visible";
-    filmsLeft.nextElementSibling.style = `font-weight: bolder`;
-  } else if (character1.films.length > character2.films.length) {
-    filmsLeft.style = "visibility: visible";
-  } else if (character2.films.length > character1.films.length) {
-    filmsRight.style = "visibility: visible";
-  }
-
-  //TA BORT NEDAN
-  // showComparison(genderLeft, genderRight, character1.gender === character2.gender,"string");
-  // showComparison(haircolorLeft, haircolorRight, character1.hairColor === character2.hairColor, "string");
-  // showComparison(heightLeft, heightRight, character1.height === character2.height, character1.height > character2.height);
-  // showComparison(massLeft, massRight, character1.mass === character2.mass, character1.mass > character2.mass);
-  // showComparison(skincolorLeft, skincolorRight, character1.skinColor === character2.skinColor, "string");
-  // showComparison(eyecolorLeft, eyecolorRight, character1.eyeColor === character2.eyeColor, "string");
-  // showComparison(filmsLeft, filmsRight, character1.films.length === character2.films.length, character1.films.length > character2.films.length);
+  //Alla jämförelser att kolla på, har lagt värdet "string" i leftIsBigger på de värden som inte ska kunna jämföras om de är större än det andra
+  showComparison(genderLeft, genderRight, character1.gender === character2.gender,"string", "string");
+  showComparison(haircolorLeft, haircolorRight, character1.hairColor === character2.hairColor, "string", "string");
+  showComparison(heightLeft, heightRight, character1.height === character2.height, character1.height > character2.height, "number");
+  showComparison(massLeft, massRight, character1.mass === character2.mass, character1.mass > character2.mass, "number");
+  showComparison(skincolorLeft, skincolorRight, character1.skinColor === character2.skinColor, "string", "string");
+  showComparison(eyecolorLeft, eyecolorRight, character1.eyeColor === character2.eyeColor, "string", "string");
+  showComparison(filmsLeft, filmsRight, character1.films.length === character2.films.length, character1.films.length > character2.films.length, "number");
 };
 
-//TA BORT NEDAN
-// function showComparison(leftElem, rightElem, isEqual, leftIsBigger) {
-//   if (isEqual) {
-//     leftElem.style = "visibility: visible";
-//     rightElem.style = "visibility: visible";
-//     leftElem.nextElementSibling.style.fontWeight = "bolder";
-//   } else if (leftIsBigger && leftIsBigger !== "string"){
-//     leftElem.style = "visibility: visible";
-//     } else if(!leftIsBigger && leftIsBigger !== "string"){
-//       rightElem.style = "visibility: visible";
-//   }
-// }
-
+//Funktion för att jämföra alla properties och visa ut pilarna som indikerar att de har samma värde som den jämförda karaktären eller om någon är längre/tyngre/varit med i fler filmer
+function showComparison(leftElem, rightElem, isEqual, leftIsBigger, type) {
+  
+  if (type === "string" && isEqual){
+      leftElem.style = "visibility: visible";
+      rightElem.style = "visibility: visible";
+      leftElem.nextElementSibling.style.fontWeight = "bolder";
+    }
+  if (type === "number" && isEqual){
+      leftElem.style = "visibility: visible";
+      rightElem.style = "visibility: visible";
+      leftElem.nextElementSibling.style.fontWeight = "bolder";
+    } else if(type === "number" && leftIsBigger){
+      leftElem.style = "visibility: visible";
+    } else if(type === "number" && !leftIsBigger) {
+      rightElem.style = "visibility: visible";
+    }
+};
+ 
 //Funktion för att rendera ut statistik-diven i mitten
 let statsDivFunction = () => {
   let statsDiv = document.createElement("div");
@@ -522,7 +468,7 @@ async function findTheExpensiveOne(data) {
     infoBox.append(p);
   }
 }
-
+//Funktion för Loading meddelande
 function loadingModal(text) {
   let modal = document.createElement("div");
   modal.innerText = text;
