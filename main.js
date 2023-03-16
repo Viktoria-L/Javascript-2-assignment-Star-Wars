@@ -88,6 +88,7 @@ class Character {
     infoBox.append(p);
   }
 
+  //Metod som hämtar dyraste fordonet, den är skapad inuti rendercharacter och det som metod körs på är character-objektet
   async mostExpensiveVehicle() {
     const characterStarships = this.starships;
     const characterVehicles = this.vehicles;
@@ -436,7 +437,7 @@ let getData = async (url) => {
   }
 };
 
-//Funktion för att hitta den dyraste av fordonen
+//Funktion för att hitta den dyraste av fordonen, tar emot en array med urls
 async function findTheExpensiveOne(data) {
   let mostExpensiveStarship = null;
   let mostExpensiveStarshipName = null;
