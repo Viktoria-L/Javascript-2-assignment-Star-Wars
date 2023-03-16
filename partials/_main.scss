@@ -5,6 +5,7 @@ main {
             width: 540px;
         }
         @include mobile{
+            width: 380px;
             flex-wrap: wrap;
         }
     }
@@ -36,6 +37,9 @@ main {
 .characterDiv{
     @include flex($direction: row, $justify: space-between);
     margin-bottom: 10px;
+    @include mobile{
+        @include flex($direction: row, $justify: space-around)
+    }
 }
 
 .charactercard{
@@ -46,6 +50,10 @@ main {
     width: 250px;
     height: 250px;
     border-radius: 4px;
+    @include mobile{
+        width: 150px;
+        height: 150px;
+    }
     }
 }
 
@@ -102,6 +110,9 @@ progress {
         top: 0;
         left: 50%;
         transform: translateX(-50%);
+    }
+    @include mobile {
+        width: 90%;
     }
 }
 

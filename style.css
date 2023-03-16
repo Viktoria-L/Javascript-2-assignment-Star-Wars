@@ -11,10 +11,15 @@ header {
 header h1 {
   font-family: "Anurati";
   color: #f5d5e0;
-  font-size: 56px;
+  font-size: 50px;
   margin: 25px;
   display: inline-block;
   letter-spacing: 2px;
+}
+@media (max-width: 540px) {
+  header h1 {
+    font-size: 32px;
+  }
 }
 
 h2 {
@@ -36,6 +41,7 @@ main {
 }
 @media (max-width: 540px) {
   main .main-content {
+    width: 380px;
     flex-wrap: wrap;
   }
 }
@@ -104,6 +110,15 @@ main {
   flex-wrap: nowrap;
   margin-bottom: 10px;
 }
+@media (max-width: 540px) {
+  .characterDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+}
 
 .charactercard {
   color: #FFFFFB;
@@ -114,6 +129,12 @@ main {
   width: 250px;
   height: 250px;
   border-radius: 4px;
+}
+@media (max-width: 540px) {
+  .charactercard img {
+    width: 150px;
+    height: 150px;
+  }
 }
 
 .compare {
@@ -179,6 +200,11 @@ progress::after {
   left: 50%;
   transform: translateX(-50%);
 }
+@media (max-width: 540px) {
+  progress {
+    width: 90%;
+  }
+}
 
 .leftDiv {
   text-align: right;
@@ -224,4 +250,10 @@ button {
 button:hover {
   background-color: #7b337d;
   color: white;
+}
+@media (max-width: 540px) {
+  button {
+    margin: 0;
+    font-size: 11px;
+  }
 }/*# sourceMappingURL=style.css.map */

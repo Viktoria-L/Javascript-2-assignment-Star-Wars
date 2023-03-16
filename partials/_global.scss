@@ -11,10 +11,13 @@ header {
     h1{
         @include font( $anurati);
         color: $light;
-        font-size: 56px;
+        font-size: 50px;
         margin: 25px;
         display: inline-block;
         letter-spacing: 2px;
+        @include mobile{
+            font-size: 32px;
+        }
     }
 }
 

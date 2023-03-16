@@ -47,6 +47,7 @@
     background-color: #7b337d;
     color: white;
   }
+
 }
 
 @mixin smallBtn{
@@ -61,5 +62,9 @@
   &:hover{
     background-color: #7b337d;
     color: white;
+  }
+  @include mobile {
+    margin: 0;
+    font-size: 11px;
   }
 }
