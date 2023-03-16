@@ -379,7 +379,7 @@ let compareCharacters = (charactersArr, index1, index2) => {
   let filmsLeft = document.getElementById("Films_left");
   let filmsRight = document.getElementById("Films_right");
 
-  //Alla jämförelser att kolla på, har lagt värdet "string" i leftIsBigger på de värden som inte ska kunna jämföras om de är större än det andra
+  //Alla jämförelser att kolla på, har lagt värdet "string" i leftIsBigger på de värden som inte ska kunna jämföras om de är större än det andra 
   showComparison(genderLeft, genderRight, character1.gender === character2.gender,"string", "string");
   showComparison(haircolorLeft, haircolorRight, character1.hairColor === character2.hairColor, "string", "string");
   showComparison(heightLeft, heightRight, character1.height === character2.height, character1.height > character2.height, "number");
