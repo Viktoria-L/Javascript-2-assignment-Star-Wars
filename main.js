@@ -54,7 +54,6 @@ class Character {
     const sameMoviesArray = character1.filter((movie) =>
       character2.includes(movie)
     );
-    console.log(sameMoviesArray);
 
     let p = document.createElement("p");
     if (sameMoviesArray.length === 0) {
