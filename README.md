@@ -5,6 +5,8 @@ Du ska med hjälp av ett API skapa en applikation där användaren kan jämföra
 
 API: https://swapi.dev
 
+Färdigt projekt: [Star Wars Trivia ](https://viktoria-l.github.io/Javascript-2-assignment-Star-Wars/)
+
 ![star-wars-trivia](https://github.com/Viktoria-L/Javascript-2-assignment-Star-Wars/assets/113613194/95f03694-70d1-4de8-ab6a-32ef0ef72196)
 
 ### Kravställning
