@@ -1,10 +1,11 @@
-# Inlämningsuppgift  - Star Wars Trivia (G/VG)
+# Inlämningsuppgift  - Star Wars Trivia 👾
 
 ## Beskrivning: 
 Du ska med hjälp av ett API skapa en applikation där användaren kan jämföra olika Star Wars-karaktärer och deras egenskaper med varandra!
 
 API: https://swapi.dev
 
+![star-wars-trivia](https://github.com/Viktoria-L/Javascript-2-assignment-Star-Wars/assets/113613194/95f03694-70d1-4de8-ab6a-32ef0ef72196)
 
 ### Kravställning
 Skapa en klass som du döper till Character med egenskaperna för name, gender, height, mass,hairColor, height, skinColor, eyeColor, movies samt pictureUrl.
